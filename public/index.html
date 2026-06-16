@@ -1,44 +1,33 @@
 <!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <title>Blaze Steam GitDB</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <main class="shell">
-    <section class="hero">
-      <div>
-        <div class="eyebrow">Blaze module</div>
-        <h1>Steam GitDB</h1>
-        <p>Локальная база приложений Steam с почасовым обновлением и историей изменений как в Git.</p>
-      </div>
-      <div class="status" id="statusBadge">checking...</div>
-    </section>
-
-    <section class="grid">
-      <div class="card">
-        <h2>Синхронизация</h2>
-        <p id="summary">Загружаю статус...</p>
-        <button id="syncBtn">Обновить сейчас</button>
-        <button id="statusBtn">Обновить статус</button>
-        <pre id="debug"></pre>
-      </div>
-
-      <div class="card">
-        <h2>Поиск игр</h2>
-        <input id="search" placeholder="Название или appid">
-        <button id="searchBtn">Найти</button>
-        <div id="apps"></div>
-      </div>
-
-      <div class="card wide">
-        <h2>История коммитов</h2>
-        <div id="commits"></div>
-      </div>
-    </section>
-  </main>
-  <script src="/app.js"></script>
-</body>
-</html>
+<meta charset="utf-8">
+<title>Steam GitDB</title>
+<link rel="stylesheet" href="/style.css">
+<div class="shell">
+  <section class="hero">
+    <div><div class="eyebrow">Blaze module</div><h1>Steam GitDB</h1><p>Local Steam application database with hourly sync and Git-like history.</p></div>
+    <div class="status" id="statusBadge">checking</div>
+  </section>
+  <section class="grid">
+    <div class="card"><h2>Sync</h2><p  id="syncStatus">Loading...</p><button id="syncBtn">Sync now</button><button id="statusBtn">Refresh status</button></div>
+    <div class="card"><h2>Search games</h2><input id="q" placeholder="Name or appid"><button id="searchBtn">Search</button><div id="results"></div></div>
+    <div class="card wide"><h2>Commits</h2><div id="commits"></div></div>
+  </section>
+</div>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  async function api(u,o){let r=await fetch(u,o);let t=await r.text();try{return JSON.parse(t)}catch(e){return {ok:false,error:t.slice(0,160)}}}
+  function row(x){return '<div class="row">'+x+'</div>'}
+  async function status(){
+    let s=await api('/api/status');
+    $('statusBadge').textContent=s.running?'syncing':(s.lastError?'error':'ok');
+    $('syncStatus').innerHTML='<b>Games:</b> '+s'['total']+'<br><b>Commits:</b> '+s['commits']+'<br><b>Head:</b> <code>'+(s['head']||'-')+'</code><br>'+(s.lastError?'Error: <b>'+s.lastError.message+'</b>':'');
+    commits();
+  }
+  async function sync(){$('syncStatus').textContent='Sync...';let r=await api('/api/sync',{method:'POST'});if(r.ok===false){$('syncStatus').textContent=r.error;return}await status();await search()}
+  async function search(){let q=$('q').value||'';let d=await api('/api/apps?q='+encodeURIComponent(q)+'&limit=100');$('results').innerHTML=(d.apps||[]).map(x=>row('<b>'+x.name+'</b><br><code>'+x.appid+'</code>')).join('')||row('No games');}
+  async function commits(){let d=await api('/api/commits?limit=20');$('commits').innerHTML=(d.commits||[]).map(c=>row('<b>'+c.createdAt+'</b><br>Total '+c.total+' | +'+c.diff.added+' -'+c.diff.removed+' rename '+c.diff.renamed)).join('')||row('No commits');}
+  $('syncBtn').onclick=sync;$('statusBtn').onclick=status;$('searchBtn').onclick=search;$('q').onkeydown=e=>{if(e.key==='Enter')search()};
+  status();setInterval(status,10000);
+})();
+</script>
