@@ -1,23 +1,44 @@
-# Blaze
+# Blaze Steam GitDB
 
-Blaze is a personal self-hosted platform for automation, dashboards, integrations and AI agents.
+Blaze branch for a local Steam application database.
 
-## Quick start
+The module uses the public Steam app list endpoint and stores every fetched catalog state as a content-addressed object. Each update creates a commit-like JSON entry with parent hash, current hash and diff stats.
+
+## Run
 
 ```bash
-git clone https://github.com/dyabloinmyhead-source/blaze.git
-cd blaze
+git checkout feature-steam-gitdb
 docker compose up --build
 ```
 
-Open http://localhost:8080
+Open:
 
-## First milestone
+```text
+http://localhost:8080
+```
 
-- Docker runtime
-- Express backend
-- Web dashboard
-- REST API
-- persistent data volume
-- modules screen
-- health endpoint
+## API
+
+```text
+GET  /api/steam/status
+POST /api/steam/sync
+GET  /api/steam/apps?q=&limit=
+GET  /api/steam/commits
+GET  /api/steam/commit/:id
+GET  /api/steam/app/:appid
+```
+
+## Data layout
+
+```text
+data/steamdb/index.json
+data/steamdb/objects/<sha256>.json
+data/steamdb/commits/<timestamp>_<sha>.json
+```
+
+## Update logic
+
+- startup sync after 3 seconds
+- hourly sync by default
+- interval can be changed with `STEAM_SYNC_INTERVAL_MS`
+- auto sync can be disabled with `STEAM_AUTO_SYNC=false`
