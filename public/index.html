@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <title>Blaze Core</title>
+  <title>Blaze Steam GitDB</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/style.css">
 </head>
@@ -10,37 +10,35 @@
   <main class="shell">
     <section class="hero">
       <div>
-        <div class="eyebrow">Self-hosted platform</div>
-        <h1>Blaze Core</h1>
-        <p>Personal infrastructure for tools, automations, integrations and AI agents.</p>
+        <div class="eyebrow">Blaze module</div>
+        <h1>Steam GitDB</h1>
+        <p>Локальная база приложений Steam с почасовым обновлением и историей изменений как в Git.</p>
       </div>
       <div class="status" id="statusBadge">checking...</div>
     </section>
 
     <section class="grid">
       <div class="card">
-        <h2>Instance</h2>
-        <input id="instanceName" placeholder="Instance name">
-        <input id="owner" placeholder="Owner">
-        <button id="saveBtn">Save settings</button>
-        <pre id="settingsOut"></pre>
+        <h2>Синхронизация</h2>
+        <p id="summary">Загружаю статус...</p>
+        <button id="syncBtn">Обновить сейчас</button>
+        <button id="statusBtn">Обновить статус</button>
+        <pre id="debug"></pre>
       </div>
 
       <div class="card">
-        <h2>Modules</h2>
-        <div id="modules"></div>
+        <h2>Поиск игр</h2>
+        <input id="search" placeholder="Название или appid">
+        <button id="searchBtn">Найти</button>
+        <div id="apps"></div>
       </div>
 
       <div class="card wide">
-        <h2>API</h2>
-        <div class="api-row"><code>GET /health</code><span>Runtime health</span></div>
-        <div class="api-row"><code>GET /api/status</code><span>App status</span></div>
-        <div class="api-row"><code>POST /api/settings</code><span>Save settings</span></div>
-        <div class="api-row"><code>GET /api/modules</code><span>List modules</span></div>
+        <h2>История коммитов</h2>
+        <div id="commits"></div>
       </div>
     </section>
   </main>
-
   <script src="/app.js"></script>
 </body>
 </html>
