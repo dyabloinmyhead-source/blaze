@@ -1,0 +1,12 @@
+services:
+  blaze:
+    build: .
+    container_name: blaze
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DATA_DIR=/app/data
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
