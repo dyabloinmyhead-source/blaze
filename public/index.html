@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Blaze Core</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Self-hosted platform</div>
+        <h1>Blaze Core</h1>
+        <p>Personal infrastructure for tools, automations, integrations and AI agents.</p>
+      </div>
+      <div class="status" id="statusBadge">checking...</div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Instance</h2>
+        <input id="instanceName" placeholder="Instance name">
+        <input id="owner" placeholder="Owner">
+        <button id="saveBtn">Save settings</button>
+        <pre id="settingsOut"></pre>
+      </div>
+
+      <div class="card">
+        <h2>Modules</h2>
+        <div id="modules"></div>
+      </div>
+
+      <div class="card wide">
+        <h2>API</h2>
+        <div class="api-row"><code>GET /health</code><span>Runtime health</span></div>
+        <div class="api-row"><code>GET /api/status</code><span>App status</span></div>
+        <div class="api-row"><code>POST /api/settings</code><span>Save settings</span></div>
+        <div class="api-row"><code>GET /api/modules</code><span>List modules</span></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
