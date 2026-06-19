@@ -1,12 +1,13 @@
 {
-  "name": "blaze",
-  "version": "0.1.0",
+  "name": "blaze-steam-watcher",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongodb": "^6.8.0"
   }
 }

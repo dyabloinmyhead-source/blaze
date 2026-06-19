@@ -1,23 +1,21 @@
-# Blaze
+# Blaze Steam Watcher
 
-Blaze is a personal self-hosted platform for automation, dashboards, integrations and AI agents.
+MongoDB-based Steam watcher for local game database, snapshots, changes and future Telegram news.
 
-## Quick start
+## Run
 
 ```bash
-git clone https://github.com/dyabloinmyhead-source/blaze.git
-cd blaze
+git checkout feature-mongodb-steam-watcher
 docker compose up --build
 ```
 
 Open http://localhost:8080
 
-## First milestone
+## Collections
 
-- Docker runtime
-- Express backend
-- Web dashboard
-- REST API
-- persistent data volume
-- modules screen
-- health endpoint
+- games — current game state
+- game_snapshots — historical full JSON snapshots
+- game_changes — detected events
+- sync_jobs — sync progress
+- watch_rules — Telegram filters
+- telegram_posts — generated/sent posts
